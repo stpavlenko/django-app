@@ -1,0 +1,14 @@
+<h1>latest reservations</h1>
+{% if latest_reservation_list %}
+<ul>
+  {% for reservation in latest_reservation_list %}
+  <li>
+    <a href="{% url 'restaurants:detail' reservation.id %}">
+      {{ reservation.table }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No reservations are available.</p>
+{% endif %}
