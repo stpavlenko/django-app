@@ -1,19 +1,21 @@
 from django.contrib import admin
 
+from .models import Restaurant, Table, Reservation, Review, MenuItem, Staff, Tag
 
-from .models import Restaurant, Table, Reservation, Review, MenuItem, Staff
 
-
-class ReservationInline(admin.TabularInline):
-    model = Reservation
+class TagInline(admin.TabularInline):
+    model = Restaurant.tags.through
+    extra = 0
+    verbose_name_plural = 'Теги'
 
 
 @admin.register(Restaurant)
 class RestaurantAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'address')
     list_display_links = ('id', 'name')
-    list_filter = ('address',)
+    list_filter = ('address', 'tags')
     fields = ['name', 'address', 'description']
+    inlines = [TagInline]
 
 
 @admin.register(Reservation)
@@ -34,8 +36,6 @@ class ReservationAdmin(admin.ModelAdmin):
 class TableAdmin(admin.ModelAdmin):
     list_display = ('id', 'restaurant', 'number', 'capacity')
     list_filter = ('restaurant', 'capacity')
-    inlines = (ReservationInline, )
-    # filter_horizontal = ('reservations', )
 
 
 @admin.register(Review)
@@ -55,3 +55,9 @@ class StaffAdmin(admin.ModelAdmin):
     list_filter = ('position',)
     search_fields = ('first_name', 'last_name', 'contact_number')
     ordering = ('last_name',)
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    list_display_links = ('id', 'name')

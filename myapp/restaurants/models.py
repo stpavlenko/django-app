@@ -2,11 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Тег')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Теги'
+
+
 class Restaurant(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
     address = models.CharField(max_length=200, verbose_name='Адрес')
     description = models.TextField(verbose_name='Описание')
-    
+    tags = models.ManyToManyField(Tag, verbose_name='Теги')
 
     def __str__(self):
         return self.name
