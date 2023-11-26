@@ -5,8 +5,15 @@ from django.template import loader
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 
-from .models import Reservation
+from rest_framework import generics, viewsets, routers
+
+from .models import Reservation, Restaurant
 from .forms import ReservationForm
+from .serializers import RestaurantSerializer
+
+class RestaurantViewSet(viewsets.ModelViewSet):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
 
 
 class IndexView(generic.ListView):
